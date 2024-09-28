@@ -1,7 +1,6 @@
 package ru.razum0ff.sqlpostgrestest.repository;
 
 import jakarta.persistence.EntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.razum0ff.sqlpostgrestest.entity.MyTableEntity;
 

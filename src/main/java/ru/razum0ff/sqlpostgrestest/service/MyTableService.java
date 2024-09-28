@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import ru.razum0ff.sqlpostgrestest.entity.MyTableEntity;
 import ru.razum0ff.sqlpostgrestest.repository.MyTableRepository;
