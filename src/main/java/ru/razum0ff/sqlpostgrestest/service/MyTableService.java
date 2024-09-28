@@ -10,10 +10,11 @@ import ru.razum0ff.sqlpostgrestest.entity.MyTableEntity;
 import ru.razum0ff.sqlpostgrestest.repository.MyTableRepository;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class MyTableService {
-
+    private final ConcurrentHashMap<Short, String> cache = new ConcurrentHashMap<>();
     final
     MyTableRepository myTableRepository;
 
@@ -22,6 +23,15 @@ public class MyTableService {
     }
 
     public String getValuesByKod(Short kod){
+        long startTime = System.currentTimeMillis();
+        String cachedValue = cache.get(kod);
+        if (cachedValue != null) {
+            System.out.println("Получено из кэша");
+            long endTime = System.currentTimeMillis();
+            long executionTime = endTime - startTime;
+            System.out.println("Время выполнения: " + executionTime + " миллисекунд");
+            return cachedValue;
+        }
         Set<MyTableEntity> entities = myTableRepository.getValuesByKod(kod);
 
         JsonArray jsonArray = new JsonArray();
@@ -35,6 +45,11 @@ public class MyTableService {
         }
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        cache.put(kod, gson.toJson(jsonArray)); // Добавляем в кэш
+        System.out.println("Время выполнения: " + executionTime + " миллисекунд");
         return gson.toJson(jsonArray);
     }
 }
