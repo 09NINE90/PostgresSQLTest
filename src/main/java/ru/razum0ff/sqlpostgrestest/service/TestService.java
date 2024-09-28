@@ -8,18 +8,20 @@ import com.google.gson.JsonObject;
 import org.springframework.stereotype.Service;
 import ru.razum0ff.sqlpostgrestest.entity.MyTableEntity;
 import ru.razum0ff.sqlpostgrestest.repository.MyTableRepository;
+import ru.razum0ff.sqlpostgrestest.repository.NameIdRepository;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class MyTableService {
+public class TestService {
     private final ConcurrentHashMap<Short, String> cache = new ConcurrentHashMap<>();
-    final
-    MyTableRepository myTableRepository;
+    final MyTableRepository myTableRepository;
+    final NameIdRepository nameIdRepository;
 
-    public MyTableService(MyTableRepository myTableRepository) {
+    public TestService(MyTableRepository myTableRepository, NameIdRepository nameIdRepository) {
         this.myTableRepository = myTableRepository;
+        this.nameIdRepository = nameIdRepository;
     }
 
     public String getValuesByKod(Short kod){
@@ -33,14 +35,16 @@ public class MyTableService {
             return cachedValue;
         }
         Set<MyTableEntity> entities = myTableRepository.getValuesByKod(kod);
-
+        String name = nameIdRepository.getNameByKod(kod);
         JsonArray jsonArray = new JsonArray();
         for (MyTableEntity entity : entities){
             JsonObject object = new JsonObject();
             object.addProperty("name", entity.getName());
+            object.addProperty("nameBank", name);
             object.addProperty("kodGG", entity.getKodGG());
             object.addProperty("email", entity.getEmail());
             object.addProperty("city", entity.getCity());
+            object.addProperty("dateWrite", String.valueOf(entity.getDateWrite()));
             jsonArray.add(object);
         }
 
@@ -48,7 +52,8 @@ public class MyTableService {
 
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
-        cache.put(kod, gson.toJson(jsonArray)); // Добавляем в кэш
+        /* Добавляем в кэш */
+        cache.put(kod, gson.toJson(jsonArray));
         System.out.println("Время выполнения: " + executionTime + " миллисекунд");
         return gson.toJson(jsonArray);
     }

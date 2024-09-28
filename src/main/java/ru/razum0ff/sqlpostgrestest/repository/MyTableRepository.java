@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import ru.razum0ff.sqlpostgrestest.entity.MyTableEntity;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
