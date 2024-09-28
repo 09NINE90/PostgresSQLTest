@@ -1,0 +1,21 @@
+table{
+    padding-top: 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+th {
+    font-size: 13px;
+    font-weight: normal;
+    background: #fff;
+    border: 2px solid #000;
+    color: #000;
+    padding: 8px;
+}
+td {
+    background: #fff;
+    color: #000;
+    border: 1px solid;
+    text-align: center;
+    padding: 8px;
+}

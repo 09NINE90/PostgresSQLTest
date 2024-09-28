@@ -40,6 +40,7 @@ public class TestService {
         for (MyTableEntity entity : entities){
             JsonObject object = new JsonObject();
             object.addProperty("name", entity.getName());
+            object.addProperty("age", entity.getAge());
             object.addProperty("nameBank", name);
             object.addProperty("kodGG", entity.getKodGG());
             object.addProperty("email", entity.getEmail());
